@@ -1,0 +1,11 @@
+[book]
+title = "El desplazamiento silencioso"
+description = "Por qué la inteligencia artificial no necesita atacarnos para dejarnos afuera"
+authors = ["Bruno Loiacono"]
+language = "es"
+src = "capitulos"
+
+[output.html]
+git-repository-url = "https://github.com/LoiaconoBruno/el-desplazamiento-silencioso"
+no-section-label = true
+additional-css = ["estilos/libro.css"]

@@ -1,0 +1,13 @@
+/* En la web, mdBook ya tiene sus propias flechas de navegación:
+   se ocultan los enlaces de "anterior / siguiente" pensados para GitHub. */
+.navegacion {
+  display: none;
+}
+
+/* El diagrama tiene fondo blanco propio, así se lee bien también en los temas oscuros. */
+main img[src$=".svg"] {
+  display: block;
+  max-width: 100%;
+  margin: 1.5em auto;
+  border-radius: 12px;
+}

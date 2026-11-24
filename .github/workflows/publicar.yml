@@ -1,0 +1,51 @@
+name: Publicar el libro
+
+# Cada cambio en main compila la web (mdBook) y el EPUB (pandoc)
+# y los publica en GitHub Pages.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    env:
+      MDBOOK_VERSION: 0.5.4
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Instalar mdBook y pandoc
+        run: |
+          cargo install mdbook --version "${MDBOOK_VERSION}" --locked
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Compilar la web
+        run: mdbook build
+
+      - name: Generar el EPUB
+        run: bash scripts/epub.sh
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: book
+
+  publicar:
+    needs: compilar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v5
